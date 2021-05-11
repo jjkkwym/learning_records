@@ -11,15 +11,13 @@ typedef struct
     int flow_control;
     const char *device_name;
 } uart_config_t;
-#define BLACK  "\033[22;30m"
-#define GREEN  "\033[22;31m"
+
 int uart_fd;
-uart_config_t uart_config = 
-{
-    .baudrate = 115200,
-    .flow_control = 0,
-    .device_name = "/dev/ttyUSB0"
-};
+uart_config_t uart_config =
+    {
+        .baudrate = 115200,
+        .flow_control = 0,
+        .device_name = "/dev/ttyUSB0"};
 static void uart_set_parity(struct termios *toptions, int parity)
 {
     if (parity)
@@ -93,24 +91,25 @@ void print_timesamp()
     time_t curr_time;
     curr_time = time(NULL);
     curr_tm = localtime(&curr_time);
-    printf("[%02d:%02d:%02d]\n",curr_tm->tm_hour,curr_tm->tm_min,curr_tm->tm_sec);
+    printf("[%02d:%02d:%02d]\n", curr_tm->tm_hour, curr_tm->tm_min, curr_tm->tm_sec);
 }
 void *uart_read(void *args)
 {
     char read_buf[1024];
     int read_len;
     int flag = 0;
-    while(1)
-    { 
-        read_len = read(uart_fd,read_buf,sizeof(read_buf));
-        if(read_len > 0)
+    while (1)
+    {
+        read_len = read(uart_fd, read_buf, sizeof(read_buf));
+        if (read_len > 0)
         {
-            if(flag == 0)
+            if (flag == 0)
             {
-                print_timesamp();
+                //print_timesamp();
             }
-            printf("%s",read_buf);
-            memset(read_buf,0,sizeof(read_buf));
+            //printf("%s",read_buf);
+            DEBUG_ARRAY("read_buf: ", read_buf, read_len);
+            memset(read_buf, 0, sizeof(read_buf));
             fflush(stdout);
             flag = 1;
         }
@@ -118,48 +117,44 @@ void *uart_read(void *args)
         {
             flag = 0;
         }
-        usleep(20000); //recive 
+        usleep(20000);
     }
 }
 void *uart_write(void *args)
 {
     char wirte_buf[1024];
     uint8_t wirte_buf_hex[1024];
+    uint8_t hci_reset[] = {0x01, 0x03, 0x0c, 0x00};
+    uint8_t hci_read_bdaddr[] = {0x01,0x09,0x10,0x00};
+    write(uart_fd, hci_reset, sizeof(hci_reset));
     while (1)
     {
-        scanf("%s",wirte_buf);
+        scanf("%s", wirte_buf);
         //DEBUG_STR(wirte_buf);
         //StrToHex(wirte_buf_hex,wirte_buf,strlen(wirte_buf));
         //DEBUG_ARRAY(wirte_buf_hex,strlen(wirte_buf));
-        write(uart_fd,wirte_buf,strlen(wirte_buf));
-        write(uart_fd,"\r\n",2);
+        write(uart_fd, wirte_buf, strlen(wirte_buf));
+        write(uart_fd, "\r\n", 2);
     }
 }
 bool uart_init()
 {
-    pthread_t read_p,write_p;
+    pthread_t read_p, write_p;
     uint32_t rc;
     rc = uart_open();
-    if(rc > 0)
+    if (rc > 0)
     {
-        pthread_create(&read_p,NULL,uart_read,NULL);
-        //DEBUG("create uart read thread");
-        pthread_create(&write_p,NULL,uart_write,NULL);
-        //DEBUG("create uart write thread");
+        pthread_create(&read_p, NULL, uart_read, NULL);
+        DEBUG("create uart read thread");
+        pthread_create(&write_p, NULL, uart_write, NULL);
+        DEBUG("create uart write thread");
     }
     return rc;
 }
-int main(int argc,char *argv[])  //UASGE ./uart /dev/ttyUSBx
+int main()
 {
-    printf("argc:%d\n",argc);
-    if(argc == 2)    
-    {
-        uart_config.device_name = argv[1];
-    }
     uart_init();
-
-    while(1)
+    while (1)
     {
-
     }
 }
