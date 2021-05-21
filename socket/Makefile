@@ -13,4 +13,4 @@ $(TARGET_DIR)/socket_client:socket_client.c
 $(TARGET_DIR)/socket_server:socket_server.c 
 	gcc -o $@ $^ -I$(INCLUDE_DIRS) 
 clean:
-	rm -f socket_client socket_server
+	rm -rf socket_client socket_server $(OUTPUT_DIR) $(TARGET_DIR)

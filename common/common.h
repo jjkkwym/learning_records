@@ -28,3 +28,9 @@ void array_print(const char *str,uint8_t *data,uint16_t length);
 #define MAX(a, b) ((a) < (b) ? (b) : (a))
 
 bool AsciiToHex(uint8_t *pbDest, char *pbSrc, int nLen);
+
+typedef bool BOOL;
+typedef uint8_t U8;
+typedef uint16_t U16;
+#define TRUE  true
+#define FALSE false
