@@ -17,7 +17,7 @@ void reset_stdin(void)
     }
     DEBUG("reset the stdin");
 }
-void stdin_init(void (*handler)(char c))
+void stdin_init(void (*handler)(char c)) //set
 {
     struct termios term = {0};
     if (tcgetattr(0, &term) < 0)
