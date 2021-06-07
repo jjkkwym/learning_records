@@ -93,7 +93,7 @@ void print_timesamp()
     time_t curr_time;
     curr_time = time(NULL);
     curr_tm = localtime(&curr_time);
-    printf("[%02d:%02d:%02d]\n",curr_tm->tm_hour,curr_tm->tm_min,curr_tm->tm_sec);
+    printf("\n[%02d:%02d:%02d]##RX##\n",curr_tm->tm_hour,curr_tm->tm_min,curr_tm->tm_sec);
 }
 void *uart_read(void *args)
 {

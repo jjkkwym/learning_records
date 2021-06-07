@@ -84,15 +84,20 @@ void btstack_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *pack
 {
     DEBUG("packet handler");
 }
+
+typedef void (*flc_ble_rx_packet_handler_t)(uint8_t *data,uint16_t data_len);
+
 int main()
 {
     list_p head = NULL;
     create_list(&head);
     int i;
+    // flc_ble_rx_packet_handler(NULL,0);
     btstack_packet_handler_t handler[10];
     for(i = 0;i < 10;i++)
     {
         handler[i] = btstack_packet_handler;
+        handler[i](0,0,0,0);
         insert_list(&head,i,handler[i]);
     }
     
