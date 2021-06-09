@@ -1,5 +1,5 @@
 #include "common.h"
-
+#include "../inc/log.h"
 typedef void (*btstack_packet_handler_t) (uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size);
 struct list_s
 {
@@ -82,7 +82,29 @@ void free_list(list_t *head)
 
 void btstack_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size)
 {
-    DEBUG("packet handler");
+/*     DEBUG("\033[1;31mpacket handler\033[1;0m");
+    DEBUG("\033[0;1mpacket handler\033[1;0m");
+    DEBUG("\033[1;4mpacket handler\033[1;0m");
+    DEBUG("\033[1;7mpacket handler\033[1;0m");
+    DEBUG("\033[1;21mpacket handler\033[1;0m");
+    DEBUG("\033[1;24mpacket handler\033[1;0m");
+    DEBUG("\033[1;27mpacket handler\033[1;0m");
+    DEBUG("\033[1;30mpacket handler\033[1;0m");
+    DEBUG("\033[1;31mpacket handler\033[1;0m");
+    DEBUG("\033[1;32mpacket handler\033[1;0m");
+    DEBUG("\033[1;33mpacket handler\033[1;0m");
+    DEBUG("\033[1;34mpacket handler\033[1;0m");
+    DEBUG("\033[1;35mpacket handler\033[1;0m");
+    DEBUG("\033[1;36mpacket handler\033[1;0m");
+    DEBUG("\033[1;37mpacket handler\033[1;0m");
+    DEBUG("\033[1;40mpacket handler\033[1;0m");
+    DEBUG("\033[1;41mpacket handler\033[1;0m");
+    DEBUG("\033[1;42mpacket handler\033[1;0m");
+    DEBUG("\033[1;43mpacket handler\033[1;0m");
+    DEBUG("\033[1;44mpacket handler\033[1;0m");
+    DEBUG("\033[1;45mpacket handler\033[1;0m");
+    DEBUG("\033[1;46mpacket handler\033[1;0m");
+    DEBUG("\033[1;47mpacket handler\033[1;0m"); */
 }
 
 typedef void (*flc_ble_rx_packet_handler_t)(uint8_t *data,uint16_t data_len);
@@ -90,6 +112,9 @@ typedef void (*flc_ble_rx_packet_handler_t)(uint8_t *data,uint16_t data_len);
 int main()
 {
     list_p head = NULL;
+    log_with_level(LOG_LEVEL_INFO,"123\n");
+    uint8_t test[] = {1,2,3};
+    array_print("111",test,3);
     create_list(&head);
     int i;
     // flc_ble_rx_packet_handler(NULL,0);

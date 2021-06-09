@@ -1,5 +1,8 @@
+#ifndef __COMMON_H__
+#define __COMMON_H__
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -29,8 +32,6 @@ void array_print(const char *str,uint8_t *data,uint16_t length);
 
 bool AsciiToHex(uint8_t *pbDest, char *pbSrc, int nLen);
 
-typedef bool BOOL;
-typedef uint8_t U8;
-typedef uint16_t U16;
-#define TRUE  true
-#define FALSE false
+#endif
+
+

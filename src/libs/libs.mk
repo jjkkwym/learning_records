@@ -1,4 +1,4 @@
-ROOT_DIR := $(shell dirname $(abspath $(shell find $(MAKEFILE_LIST) -name *.cfg)))
+ROOT_DIR := ../../..#$(shell dirname $(abspath $(shell find $(MAKEFILE_LIST) -name *.cfg)))
 #ROOT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))#$(shell pwd)
 BUILD_DIR := $(ROOT_DIR)/build
 LIBS_DIR := $(BUILD_DIR)/libs

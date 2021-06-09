@@ -1,4 +1,3 @@
-all:
-	gcc -c ../common/common.c
-	gcc -c uart.c -I../common
-	gcc -o uart common.o uart.o -lpthread
+C_SRC := $(wildcard ./*.c)
+LIBS := -lpthread
+include ../project.mk

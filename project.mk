@@ -1,6 +1,7 @@
-ROOT_DIR := $(shell dirname $(abspath $(shell find $(MAKEFILE_LIST) -name *.cfg)))
+ROOT_DIR := $(shell dirname $(abspath $(shell find $(MAKEFILE_LIST) -name project.mk)))
 #ROOT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))#$(shell pwd)
 BUILD_DIR := $(ROOT_DIR)/build
+OUT_DIR := $(ROOT_DIR)/out
 LIBS_DIR := $(BUILD_DIR)/libs
 SUB_BUILD_DIR_BASENAME := $(shell basename $(shell pwd))
 SUB_BUILD_DIR := $(BUILD_DIR)/$(SUB_BUILD_DIR_BASENAME)#$(shell dirname $)
@@ -8,10 +9,10 @@ COMMON_LIBS_DIR := #$(ROOT_DIR)/common
 COMMON_LIBS_BUILD_DIR := #$(BUILD_DIR)/common
 
 INCLUDE_DIRS := $(ROOT_DIR)/src/libs/common#$(COMMON_LIBS_DIR)
-LIBS := $(LIBS_DIR)/common.a
+LIBS += $(LIBS_DIR)/common.a
 C_SRC ?= #$(wildcard $(COMMON_LIBS_DIR)/*.c)
 OBJS = $(patsubst %.c,$(SUB_BUILD_DIR)/%.o,$(C_SRC))
-TARGET ?= demo 
+TARGET ?= $(OUT_DIR)/demo 
 # bar := ${subst not, totally, "I am not superman"}
 # $(info bar:$(bar))
 # $(info($(foreach a,$(MAKEFILE_LIST),ifeq(a,Makefile.cfg))))
@@ -46,11 +47,11 @@ $(info #########################################)
 endef
 
 
-all: $(OBJS)
-	$(print_files)   
-	$(CC) -o $(TARGET) $(OBJS) $(LIBS) 
-#-I$(INCLUDE_DIRS)
-#-I$(INCLUDE_DIRS)
+$(TARGET): $(OBJS)
+	$(print_files)
+	$(MK) -p $(dir $@)
+	$(CC) -o $@ $(OBJS) $(LIBS) 
+
 
 $(SUB_BUILD_DIR)/%.o:%.c
 	$(MK) -p $(dir $@)
@@ -62,7 +63,3 @@ $(SUB_BUILD_DIR)/%.o:%.c
 # 	$(CC) -c $< -o $@
 clean:
 	$(RM) -rf $(SUB_BUILD_DIR) $(TARGET)
-
-
-# all:
-#     $(CC) -o list $(C_SRC) $(LIBS) -I$(INCLUDE_DIRS)

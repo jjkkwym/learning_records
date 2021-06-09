@@ -1,2 +1,2 @@
-include ../Makefile.cfg
-C_SRC += list.c
+C_SRC := list.c
+include ../project.mk
