@@ -1,3 +1,3 @@
-C_SRC := $(wildcard ./*.c)
+C_SRC := $(wildcard *.c)
 LIBS := -lpthread
 include ../project.mk

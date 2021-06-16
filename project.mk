@@ -1,7 +1,7 @@
 ROOT_DIR := $(shell dirname $(abspath $(shell find $(MAKEFILE_LIST) -name project.mk)))
 #ROOT_DIR := $(shell dirname $(abspath $(lastword $(MAKEFILE_LIST))))#$(shell pwd)
 BUILD_DIR := $(ROOT_DIR)/build
-OUT_DIR := $(ROOT_DIR)/out
+OUT_DIR := $(BUILD_DIR)/out
 LIBS_DIR := $(BUILD_DIR)/libs
 SUB_BUILD_DIR_BASENAME := $(shell basename $(shell pwd))
 SUB_BUILD_DIR := $(BUILD_DIR)/$(SUB_BUILD_DIR_BASENAME)#$(shell dirname $)
@@ -46,6 +46,7 @@ $(info OBJS: 		  $(OBJS))
 $(info #########################################)
 endef
 
+all:clean $(TARGET)
 
 $(TARGET): $(OBJS)
 	$(print_files)

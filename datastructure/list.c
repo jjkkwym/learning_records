@@ -82,7 +82,7 @@ void free_list(list_t *head)
 
 void btstack_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *packet, uint16_t size)
 {
-/*     DEBUG("\033[1;31mpacket handler\033[1;0m");
+ /*    DEBUG("\033[1;31mpacket handler\033[1;0m");
     DEBUG("\033[0;1mpacket handler\033[1;0m");
     DEBUG("\033[1;4mpacket handler\033[1;0m");
     DEBUG("\033[1;7mpacket handler\033[1;0m");
@@ -107,12 +107,26 @@ void btstack_packet_handler(uint8_t packet_type, uint16_t channel, uint8_t *pack
     DEBUG("\033[1;47mpacket handler\033[1;0m"); */
 }
 
+#define contact(a,b,c) a#b#c
+
 typedef void (*flc_ble_rx_packet_handler_t)(uint8_t *data,uint16_t data_len);
 
 int main()
 {
     list_p head = NULL;
-    log_with_level(LOG_LEVEL_INFO,"123\n");
+/*     DEBUG("\033[1;31mpacket handler\033[1;0m");
+    printf("\033[1;31m123\033[1;0m\n"); */
+/*    printf("123""456""\n");
+    printf(GREEN"12345"RESET);*/
+    //PRINT(GREEN"12345"RESET); 
+
+/*     log_with_level(LOG_LEVEL_INFO,"123\n");
+    log_with_level(LOG_LEVEL_INFO,"123\n"); */
+    LOG_DEBUG("12123");
+    LOG_INFO("12123");
+    LOG_WARNING("12123");
+    LOG_ERROR("12123");
+    LOG_INFO("lover lover");
     uint8_t test[] = {1,2,3};
     array_print("111",test,3);
     create_list(&head);
