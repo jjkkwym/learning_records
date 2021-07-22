@@ -149,8 +149,39 @@ bool uart_init()
     }
     return rc;
 }
+
+static bool shell_cmd(char *cmd,char *cmd_return,uint16_t len)
+{
+	FILE *fstream = NULL;      
+    char buf[128];    
+    memset(buf, 0, sizeof(buf));
+	if(NULL == (fstream = popen(cmd,"r")))      
+    {           
+        LOG_ERROR("popen failed");
+        return 0;      
+    }   
+    if(NULL != fgets(buf, sizeof(buf), fstream)) 
+    {  
+		LOG_DEBUG("%s",buf);
+		if(len < sizeof(buf))
+		{
+			memcpy(cmd_return,buf,len);
+			cmd_return[len] = '\0';		
+		}
+		else
+		{
+			memcpy(cmd_return,buf,sizeof(buf));
+		}
+    }  
+    pclose(fstream);
+	return 1;
+}
 int main(int argc,char *argv[])  //UASGE ./uart /dev/ttyUSBx
 {
+    char buf[1024];
+    shell_cmd("ls -l",buf,sizeof(buf));
+    printf("buf:%s\n",buf);
+
     printf("argc:%d\n",argc);
     if(argc == 2)    
     {
@@ -160,6 +191,6 @@ int main(int argc,char *argv[])  //UASGE ./uart /dev/ttyUSBx
 
     while(1)
     {
-
+        
     }
 }

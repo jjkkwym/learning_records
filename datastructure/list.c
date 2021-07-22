@@ -32,7 +32,7 @@ void create_list(list_p *head)
     *head = p;
     DEBUG("creat list suss head list: %p\n",*head);
 }
-void insert_list(list_p *head,int data,    btstack_packet_handler_t packet_handler)
+void insert_list(list_p *head,int data,btstack_packet_handler_t packet_handler)
 {
     if(*head == NULL)
     {

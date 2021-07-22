@@ -39,3 +39,11 @@ $ wpa_supplicant -i wlan0 -B -c /etc/wpa_supplicant/wpa_supplicant.conf
 注意：
 1、有线网卡和无线网卡不能同时使用，禁止其中一个即可
 2、NetworkManager服务需停止，否则会不停重启报错
+
+
+sed -i "s/.../.../" file
+
+CONFIG_FILE="./test_config.conf"
+TARGET_KEY=abc
+REPLACEMENT_VALUE=3
+sed -i "s/\($TARGET_KEY *= *\).*/\1$REPLACEMENT_VALUE/" $CONFIG_FILE

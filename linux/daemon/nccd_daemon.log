@@ -1,0 +1,186 @@
+log_fd:0
+proc_path :/home/flc/project/learning_records/linux/daemon/nccd_server,procname:nccd_server
+child pid:5673
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5674
+proc_pid[0]:5673
+proc_pid[1]:5674
+process proc_pid[1]:5674 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5692
+start proc_pid[1] = 5692
+process proc_pid[1]:5692 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5693
+start proc_pid[1] = 5693
+process proc_pid[1]:5693 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5701
+start proc_pid[1] = 5701
+process proc_pid[1]:5701 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5708
+start proc_pid[1] = 5708
+process proc_pid[1]:5708 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5709
+start proc_pid[1] = 5709
+process proc_pid[1]:5709 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5716
+start proc_pid[1] = 5716
+process proc_pid[1]:5716 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5717
+start proc_pid[1] = 5717
+process proc_pid[1]:5717 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5724
+start proc_pid[1] = 5724
+process proc_pid[1]:5724 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5732
+start proc_pid[1] = 5732
+process proc_pid[1]:5732 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5733
+start proc_pid[1] = 5733
+process proc_pid[1]:5733 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5741
+start proc_pid[1] = 5741
+process proc_pid[1]:5741 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5742
+start proc_pid[1] = 5742
+process proc_pid[1]:5742 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5749
+start proc_pid[1] = 5749
+process proc_pid[1]:5749 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5752
+start proc_pid[1] = 5752
+process proc_pid[1]:5752 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5765
+start proc_pid[1] = 5765
+process proc_pid[1]:5765 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5783
+start proc_pid[1] = 5783
+process proc_pid[1]:5783 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5784
+start proc_pid[1] = 5784
+process proc_pid[1]:5784 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5793
+start proc_pid[1] = 5793
+process proc_pid[1]:5793 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5796
+start proc_pid[1] = 5796
+process proc_pid[1]:5796 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5803
+start proc_pid[1] = 5803
+process proc_pid[1]:5803 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5805
+start proc_pid[1] = 5805
+process proc_pid[1]:5805 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5811
+start proc_pid[1] = 5811
+process proc_pid[0]:5673 exit abnormal
+try restart proc_pid[0]..
+proc_path :/home/flc/project/learning_records/linux/daemon/nccd_server,procname:nccd_server
+child pid:5826
+start proc_pid[0] = 5826
+process proc_pid[1]:5811 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5835
+start proc_pid[1] = 5835
+process proc_pid[1]:5835 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5839
+start proc_pid[1] = 5839
+process proc_pid[1]:5839 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5846
+start proc_pid[1] = 5846
+process proc_pid[1]:5846 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5848
+start proc_pid[1] = 5848
+process proc_pid[1]:5848 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5855
+start proc_pid[1] = 5855
+process proc_pid[1]:5855 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5863
+start proc_pid[1] = 5863
+process proc_pid[1]:5863 exit normal
+the return code is 0
+try restart proc_pid[1]..
+proc_path :/home/flc/project/learning_records/linux/daemon/ftp,procname:ftp
+child pid:5870
+start proc_pid[1] = 5870
