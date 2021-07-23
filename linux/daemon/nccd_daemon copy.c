@@ -13,7 +13,6 @@
 #include <fcntl.h>
 #include <sys/param.h>
 #include <sys/prctl.h>
-#include <stdarg.h>
 
 int log_fd;
 int config_fd;
@@ -21,28 +20,15 @@ char log_buf[256];
 
 #define LOG_FILE 1
 #if LOG_FILE
-//#define LOG(...) write_log(format,##__VA_ARGS__)
 #define LOG(format,...)   \
     do                          \
     {                           \
         sprintf(log_buf,format,##__VA_ARGS__); \
         write(log_fd,log_buf,strlen(log_buf));  \
     }while(0)
-#else 
+#else
 #define LOG(format,...) printf(format,##__VA_ARGS__);
 #endif
-
-void write_log(char *format,...)
-{   
-    char buf[512];
-    int pos;
-    va_list args;
-    //char color[10];
-    va_start(args,format);
-    sprintf(buf,format,args);
-    va_end(args);
-    write(log_fd,buf,strlen(buf));
-} 
 
 int daemon_init(void)  
 {   
@@ -153,7 +139,7 @@ int find_proc_index(pid_t pid,int num)
         if(pid == proc_pid[i])
         return i;
     }
-    LOG("pid %d not found\n",pid);
+    LOG("pid not found\n");
     return -1;    
 }
 
@@ -224,16 +210,13 @@ int main(int argc,char *argv[])
         printf("Usage:nccd_daemon config_file_path log_file_path\n");
         exit(0);
     }
-    realpath(argv[1],config_file_path);
-    realpath(argv[2],log_file_path);
-    //strncpy(config_file_path,argv[1],sizeof(config_file_path));
-    //strncpy(log_file_path,argv[2],sizeof(log_file_path));
+    strncpy(config_file_path,argv[1],sizeof(config_file_path));
+    strncpy(log_file_path,argv[2],sizeof(log_file_path));
     printf("log_file_path:%s\n",log_file_path);
     printf("config_file_path:%s\n",config_file_path);
 #if LOG_FILE
     daemon_init();
     log_fd = open(log_file_path,O_WRONLY | O_CREAT | O_TRUNC,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-    LOG("log_fd:%d\n",log_fd);
 #endif
     proc_num = read_config_file(config_file_path);
     
@@ -248,7 +231,7 @@ int main(int argc,char *argv[])
     {
         proc_pid[i] = start_process(proc_path[i]);    
     }
-    print_proc_pid(proc_num);
+    //print_proc_pid(proc_num);
     while (1)
     {
         exit_pid = wait(&status);
@@ -271,7 +254,6 @@ int main(int argc,char *argv[])
         {
             LOG("fault,exit_pid_index:%d\n",exit_pid_index);
         }
-        usleep(1000);
     }
     close(log_fd);
     return EXIT_SUCCESS;

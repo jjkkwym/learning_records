@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <unistd.h>
-#include <stdlib.h>
-int main()
+int main(int argc,char *argv[])
 {
-    printf("test\n");
-    sleep(3);
+    printf("program name:%s\n",argv[0]);
+    sleep(5);
 }
