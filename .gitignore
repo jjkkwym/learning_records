@@ -2,6 +2,6 @@
 .vscode/
 lover/
 */a.out
-build/
+**/build/
 out/
 third_part/
