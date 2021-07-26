@@ -10,7 +10,7 @@ void write_log(char *format,...)
     //char color[10];
     va_start(args,format);
     //printf("%s",buf);
-    vsprintf(buf,format,args);
+    vsnprintf(buf,sizeof(buf),format,args);
     va_end(args);
     printf("%s\n",buf);
 } 
@@ -19,4 +19,6 @@ void write_log(char *format,...)
 int main()
 {
     write_log("test:%s","123");
+    LOG_DEBUG("123");
+    LOG_INFO("hello %s","world");
 }

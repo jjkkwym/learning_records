@@ -14,34 +14,46 @@
 #include <sys/param.h>
 #include <sys/prctl.h>
 #include <stdarg.h>
-
-int log_fd;
+#include <sys/time.h> 
 int config_fd;
-char log_buf[256];
-
+char log_file_path[128];
 #define LOG_FILE 1
 #if LOG_FILE
-//#define LOG(...) write_log(format,##__VA_ARGS__)
-#define LOG(format,...)   \
-    do                          \
-    {                           \
-        sprintf(log_buf,format,##__VA_ARGS__); \
-        write(log_fd,log_buf,strlen(log_buf));  \
-    }while(0)
+#define LOG(format,...) write_log(log_file_path,format,##__VA_ARGS__)
 #else 
 #define LOG(format,...) printf(format,##__VA_ARGS__);
 #endif
 
-void write_log(char *format,...)
+void write_log(char *log_file_path,char *format,...)
 {   
     char buf[512];
-    int pos;
     va_list args;
-    //char color[10];
+    int log_fd;
+    int n;
+    char *pos = buf;
+    struct tm* ptm;
+    struct timeval curr_time;
+    char time_string[40];
+    gettimeofday(&curr_time, NULL);
+    time_t curr_time_secs = curr_time.tv_sec;
+    /* Obtain the time of day, and convert it to a tm struct. */
+    ptm = localtime (&curr_time_secs);
+    /* assert localtime was successful */
+    if (!ptm) return;
+    /* Format the date and time, down to a single second. */
+    strftime (time_string, sizeof (time_string), "%H:%M:%S", ptm);
+    /* Compute milliseconds from microseconds. */
+    uint16_t milliseconds = curr_time.tv_usec / 1000;
+    
+    n = sprintf (buf,"[%s.%03u]", time_string, milliseconds);
+    pos += n;
+    log_fd = open(log_file_path,O_WRONLY | O_CREAT | O_APPEND,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     va_start(args,format);
-    sprintf(buf,format,args);
+    vsprintf(pos,format,args);
     va_end(args);
     write(log_fd,buf,strlen(buf));
+    printf("%s",buf);
+    close(log_fd);
 } 
 
 int daemon_init(void)  
@@ -118,12 +130,10 @@ int start_process(char *proc_path)
         {
             return 0;
         }
-    } 
-    else 
-    {
-        //LOG("child pid:%d\n",pid);
-        child_pid = pid;
+        exit(0);
     }
+    child_pid = pid;
+    
     LOG("%s process started\n",proc_name);
     return (int)child_pid;
 }
@@ -205,9 +215,9 @@ int read_config_file(char *config_file_path)
 void signal_handler()
 {
     LOG("signal recv,exit\n");
-#if LOG_FILE
-    close(log_fd);
-#endif
+// #if LOG_FILE
+//     close(log_fd);
+// #endif
     exit(0);
 }
 
@@ -218,7 +228,7 @@ int main(int argc,char *argv[])
     int exit_pid_index;
     int proc_num;
     signal(SIGTERM, signal_handler);
-    char log_file_path[128],config_file_path[128];
+    char config_file_path[128];
     if(argc < 3)
     {
         printf("Usage:nccd_daemon config_file_path log_file_path\n");
@@ -231,9 +241,9 @@ int main(int argc,char *argv[])
     printf("log_file_path:%s\n",log_file_path);
     printf("config_file_path:%s\n",config_file_path);
 #if LOG_FILE
-    daemon_init();
-    log_fd = open(log_file_path,O_WRONLY | O_CREAT | O_TRUNC,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-    LOG("log_fd:%d\n",log_fd);
+    //daemon_init();
+    int log_fd = open(log_file_path,O_WRONLY | O_CREAT | O_TRUNC,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+    close(log_fd);
 #endif
     proc_num = read_config_file(config_file_path);
     
@@ -273,7 +283,6 @@ int main(int argc,char *argv[])
         }
         usleep(1000);
     }
-    close(log_fd);
     return EXIT_SUCCESS;
 }
 //./nccd_daemon /mnt/UDISK/nccd/nccd_daemon.conf /mnt/UDISK/nccd/nccd_daemon.log

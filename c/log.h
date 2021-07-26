@@ -32,10 +32,10 @@
 #define LOG_DEBUG_COLOR   BLUE
 #define LOG_TIMESTAMP_COLOR CYAN
 
-#define LOG_ERROR(...)   log_with_level(LOG_LEVEL_ERROR,__VA_ARGS__ "\r\n")   
-#define LOG_WARNING(...) log_with_level(LOG_LEVEL_WARNING,__VA_ARGS__ "\r\n")
-#define LOG_INFO(...)    log_with_level(LOG_LEVEL_INFO,__VA_ARGS__"\r\n")
-#define LOG_DEBUG(...)   log_with_level(LOG_LEVEL_DEBUG,__VA_ARGS__"\r\n")
+#define LOG_ERROR(format,...)   log_with_level(LOG_LEVEL_ERROR,format,##__VA_ARGS__)   
+#define LOG_WARNING(format,...) log_with_level(LOG_LEVEL_WARNING,format,##__VA_ARGS__)
+#define LOG_INFO(format,...)    log_with_level(LOG_LEVEL_INFO,format,##__VA_ARGS__)
+#define LOG_DEBUG(format,...)   log_with_level(LOG_LEVEL_DEBUG,format,##__VA_ARGS__)
 
 #define LOG_HEXDUMP_ERROR(p_data, len)   
 #define LOG_HEXDUMP_WARNING(p_data, len) 
@@ -44,7 +44,7 @@
 
 #define LOG_HEXDUMP
 
-#define PRINT(...)      printf(__VA_ARGS__)
+#define PRINT(format,...)      printf(format,__VA_ARGS__)
 
 /* reset             0  (everything back to normal)
 bold/bright       1  (often a brighter shade of the same colour)

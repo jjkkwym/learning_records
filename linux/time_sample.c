@@ -15,7 +15,7 @@
 #include <sys/prctl.h>
 #include <sys/time.h>     // for timestamps
 #include <stdarg.h>
-static void printf_timestamp(void){
+static void printf_timestamp(char *timestamp,uint16_t len){
     struct tm* ptm;
     struct timeval curr_time;
     char time_string[40];
@@ -26,11 +26,11 @@ static void printf_timestamp(void){
     /* assert localtime was successful */
     if (!ptm) return;
     /* Format the date and time, down to a single second. */
-    strftime (time_string, sizeof (time_string), "[%Y-%m-%d %H:%M:%S", ptm);
+    strftime (time_string, sizeof (time_string), "%Y-%m-%d %H:%M:%S", ptm);
     /* Compute milliseconds from microseconds. */
     uint16_t milliseconds = curr_time.tv_usec / 1000;
     /* Print the formatted time, in seconds, followed by a decimal point and the milliseconds. */
-    printf ("%s.%03u] ", time_string, milliseconds);
+    snprintf (timestamp,len,"[%s.%03u]", time_string, milliseconds);
 }
 int daemon_init(void)  
 {   
@@ -76,7 +76,7 @@ void write_log(char *format,...)
     //char color[10];
     va_start(args,format);
     //printf("%s",buf);
-    sprintf(buf,format,args);
+    vsprintf(buf,format,args);
     va_end(args);
     printf("%s\n",buf);
 } 
@@ -90,12 +90,7 @@ int main(int argc,char *argv[])
     log_fd = open(log_file_path,O_WRONLY | O_CREAT | O_TRUNC,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     write_log("%s\n%s\n",log_file_path,"123");
     LOG("456\n");
-    LOG();
     printf_timestamp();
-    while(1)
-    {
-
-    }
     close(log_fd);
 }
 

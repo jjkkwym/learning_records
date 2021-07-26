@@ -1,5 +1,72 @@
-log_fd:293949112
-value process num:293949112
- process started
- process started
- process started
+[2021-07-25 20:29:58.800]#/home/flc/project/learning_records/linux/daemon/test3 process not exist or execute
+[2021-07-25 20:29:58.800]#/home/flc/project/learning_records/linux/daemon/test4 process not exist or execute
+[2021-07-25 20:29:58.800]#/home/flc/project/learning_records/linux/daemon/test5 process not exist or execute
+[2021-07-25 20:29:58.800]value process num:4
+[2021-07-25 20:29:58.800]nccd_server process started
+[2021-07-25 20:29:58.801]test process started
+[2021-07-25 20:29:58.801]test1 process started
+[2021-07-25 20:29:58.801]test2 process started
+[2021-07-25 20:29:58.801]proc_pid[0]:71804
+[2021-07-25 20:29:58.802]proc_pid[1]:71805
+[2021-07-25 20:29:58.802]proc_pid[2]:71806
+[2021-07-25 20:29:58.802]proc_pid[3]:71807
+[2021-07-25 20:30:03.808]process proc_pid[1]:71805 exit normal
+[2021-07-25 20:30:03.809]the return code is 0
+[2021-07-25 20:30:03.809]try restart proc_pid[1]..
+[2021-07-25 20:30:03.809]test process started
+[2021-07-25 20:30:03.809]start proc_pid[1] = 71825
+[2021-07-25 20:30:03.811]process proc_pid[2]:71806 exit normal
+[2021-07-25 20:30:03.811]the return code is 0
+[2021-07-25 20:30:03.811]try restart proc_pid[2]..
+[2021-07-25 20:30:03.812]test1 process started
+[2021-07-25 20:30:03.812]start proc_pid[2] = 71826
+[2021-07-25 20:30:03.814]process proc_pid[3]:71807 exit normal
+[2021-07-25 20:30:03.815]the return code is 0
+[2021-07-25 20:30:03.815]try restart proc_pid[3]..
+[2021-07-25 20:30:03.815]test2 process started
+[2021-07-25 20:30:03.815]start proc_pid[3] = 71827
+[2021-07-25 20:30:08.813]process proc_pid[1]:71825 exit normal
+[2021-07-25 20:30:08.814]the return code is 0
+[2021-07-25 20:30:08.815]try restart proc_pid[1]..
+[2021-07-25 20:30:08.815]test process started
+[2021-07-25 20:30:08.815]start proc_pid[1] = 71834
+[2021-07-25 20:30:08.816]process proc_pid[2]:71826 exit normal
+[2021-07-25 20:30:08.817]the return code is 0
+[2021-07-25 20:30:08.818]try restart proc_pid[2]..
+[2021-07-25 20:30:08.820]test1 process started
+[2021-07-25 20:30:08.825]start proc_pid[2] = 71835
+[2021-07-25 20:30:08.827]process proc_pid[3]:71827 exit normal
+[2021-07-25 20:30:08.827]the return code is 0
+[2021-07-25 20:30:08.827]try restart proc_pid[3]..
+[2021-07-25 20:30:08.827]test2 process started
+[2021-07-25 20:30:08.827]start proc_pid[3] = 71836
+[2021-07-25 20:30:13.835]process proc_pid[1]:71834 exit normal
+[2021-07-25 20:30:13.835]the return code is 0
+[2021-07-25 20:30:13.836]try restart proc_pid[1]..
+[2021-07-25 20:30:13.836]test process started
+[2021-07-25 20:30:13.836]start proc_pid[1] = 71847
+[2021-07-25 20:30:13.843]process proc_pid[2]:71835 exit normal
+[2021-07-25 20:30:13.843]the return code is 0
+[2021-07-25 20:30:13.843]try restart proc_pid[2]..
+[2021-07-25 20:30:13.843]test1 process started
+[2021-07-25 20:30:13.843]start proc_pid[2] = 71848
+[2021-07-25 20:30:13.844]process proc_pid[3]:71836 exit normal
+[2021-07-25 20:30:13.844]the return code is 0
+[2021-07-25 20:30:13.845]try restart proc_pid[3]..
+[2021-07-25 20:30:13.845]test2 process started
+[2021-07-25 20:30:13.845]start proc_pid[3] = 71849
+[2021-07-25 20:30:18.839]process proc_pid[1]:71847 exit normal
+[2021-07-25 20:30:18.839]the return code is 0
+[2021-07-25 20:30:18.840]try restart proc_pid[1]..
+[2021-07-25 20:30:18.840]test process started
+[2021-07-25 20:30:18.840]start proc_pid[1] = 71859
+[2021-07-25 20:30:18.845]process proc_pid[2]:71848 exit normal
+[2021-07-25 20:30:18.846]the return code is 0
+[2021-07-25 20:30:18.846]try restart proc_pid[2]..
+[2021-07-25 20:30:18.846]test1 process started
+[2021-07-25 20:30:18.846]start proc_pid[2] = 71860
+[2021-07-25 20:30:18.852]process proc_pid[3]:71849 exit normal
+[2021-07-25 20:30:18.853]the return code is 0
+[2021-07-25 20:30:18.853]try restart proc_pid[3]..
+[2021-07-25 20:30:18.853]test2 process started
+[2021-07-25 20:30:18.853]start proc_pid[3] = 71861
