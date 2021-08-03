@@ -6,3 +6,4 @@ lover/
 out/
 third_part/
 **/test/
+.history/
