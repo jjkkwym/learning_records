@@ -17,12 +17,12 @@
 #include <sys/time.h> 
 int config_fd;
 char log_file_path[128];
-#define LOG_FILE 1
-#if LOG_FILE
+
+
 #define LOG(format,...) write_log(log_file_path,format,##__VA_ARGS__)
-#else 
-#define LOG(format,...) printf(format,##__VA_ARGS__);
-#endif
+
+
+#define MAX_PROC_NUM 10
 
 void write_log(char *log_file_path,char *format,...)
 {   
@@ -65,8 +65,7 @@ int daemon_init(void)
     if (pid < 0) {
             exit(EXIT_FAILURE);
     }
-    /* If we got a good PID, then
-       we can exit the parent process. */
+    /* If we got a good PID, then we can exit the parent process. */
     if (pid > 0) {
             exit(EXIT_SUCCESS);
     }
@@ -78,29 +77,28 @@ int daemon_init(void)
             /* Log the failure */
             exit(EXIT_FAILURE);
     }
-    
     /* Change the current working directory */
     if ((chdir("/")) < 0) {
             /* Log the failure */
             exit(EXIT_FAILURE);
     }
     /* Close out the standard file descriptors */
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO); 
+    int null_fd = open("/dev/null",O_WRONLY | O_TRUNC);
+    dup2(null_fd,STDOUT_FILENO);
+    dup2(null_fd,STDERR_FILENO);
+    dup2(null_fd,STDIN_FILENO);
+    close(null_fd);
+    // close(STDIN_FILENO);
+    // close(STDOUT_FILENO);
+    // close(STDERR_FILENO); 
 }
 
 char *get_basename (char *path)
 {
     char *s = strrchr (path, '/');
-
     return (s == NULL) ? path : ++s;
 }
-#if 0
-#define PROC_PATH "/home/flc/project/learning_records/linux/daemon/"
-#else
-#define PROC_PATH "/mnt/UDISK/nccd/"
-#endif
+
 int start_process(char *proc_path)
 {
     pid_t pid, child_pid;
@@ -138,13 +136,7 @@ int start_process(char *proc_path)
     return (int)child_pid;
 }
 
-typedef enum
-{
-    NCCD_SERVER = 0,
-    FTP,
-    MAX_PROC
-}proc_pid_t;
-pid_t proc_pid[MAX_PROC];
+pid_t proc_pid[MAX_PROC_NUM];
 
 void print_proc_pid(int num)
 {
@@ -174,7 +166,7 @@ void start_process_by_proc_pid(int proc_pid_index)
     LOG("start proc_pid[%d] = %d\n",proc_pid_index,proc_pid[proc_pid_index]);
 }
 
-#define MAX_PROC_NUM 10
+
 int read_config_file(char *config_file_path)
 {
     FILE *config_fd = fopen(config_file_path,"r");
@@ -186,8 +178,7 @@ int read_config_file(char *config_file_path)
     }
     char buf[128];
     while(fgets(buf,sizeof(buf),config_fd))
-    {
-        
+    {        
         char *find = strchr(buf, ' ');  //找出data中的" "
         if(find)
             *find = '\0';   //替换
@@ -215,9 +206,6 @@ int read_config_file(char *config_file_path)
 void signal_handler()
 {
     LOG("signal recv,exit\n");
-// #if LOG_FILE
-//     close(log_fd);
-// #endif
     exit(0);
 }
 
@@ -238,13 +226,12 @@ int main(int argc,char *argv[])
     realpath(argv[2],log_file_path);
     //strncpy(config_file_path,argv[1],sizeof(config_file_path));
     //strncpy(log_file_path,argv[2],sizeof(log_file_path));
-    printf("log_file_path:%s\n",log_file_path);
-    printf("config_file_path:%s\n",config_file_path);
-#if LOG_FILE
-    //daemon_init();
+    printf("log file local path:%s\n",log_file_path);
+    printf("config file local path:%s\n",config_file_path);
+    printf("daemon start\n");
+    daemon_init();
     int log_fd = open(log_file_path,O_WRONLY | O_CREAT | O_TRUNC,S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     close(log_fd);
-#endif
     proc_num = read_config_file(config_file_path);
     
     LOG("value process num:%d\n",proc_num);
@@ -267,21 +254,23 @@ int main(int argc,char *argv[])
         {
             if(WIFEXITED(status))
             {
-                LOG("process proc_pid[%d]:%d exit normal\n",exit_pid_index,exit_pid);
+                LOG("process %s,proc_pid[%d]:%d exit normal\n",
+                get_basename(proc_path[exit_pid_index]),exit_pid_index,exit_pid);
                 LOG("the return code is %d\n",WEXITSTATUS(status));
             }
             else
             {
-                LOG("process proc_pid[%d]:%d exit abnormal\n",exit_pid_index,exit_pid);
+                LOG("process %s,proc_pid[%d]:%d exit abnormal\n",
+                get_basename(proc_path[exit_pid_index]),exit_pid_index,exit_pid);
             }
-            LOG("try restart proc_pid[%d]..\n",exit_pid_index);
+            LOG("try restart %s,proc_pid[%d]..\n",get_basename(proc_path[exit_pid_index]),exit_pid_index);
             start_process_by_proc_pid(exit_pid_index);
         }
         else
         {
             LOG("fault,exit_pid_index:%d\n",exit_pid_index);
         }
-        usleep(1000);
+        sleep(1);
     }
     return EXIT_SUCCESS;
 }

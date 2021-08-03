@@ -26,7 +26,7 @@ class ListNode
         info = data;
         next = in;
     }
-  public:
+  public:la
     int info;
     ListNode *next;
 };

@@ -21,4 +21,5 @@ int main()
     write_log("test:%s","123");
     LOG_DEBUG("123");
     LOG_INFO("hello %s","world");
+    
 }

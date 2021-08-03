@@ -3,25 +3,19 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <string.h>
 #include <arpa/inet.h>
-#include <fcntl.h>
-
-void write_log(char *log_file_path,char *format,...)
-{   
-	
-} 
-
+ 
+ 
 int main(int argc, char **argv)
 {
 	snd_pcm_t *handle;//pcm句柄
 	snd_pcm_hw_params_t *params;//pcm属性
  
 	//打开设备
-	int r = snd_pcm_open(&handle, "default", SND_PCM_STREAM_PLAYBACK,0);
+	int r = snd_pcm_open(&handle, "default", SND_PCM_STREAM_CAPTURE,0);
 	if(r < 0)
 	{
-		perror("snd pcm open fail");
+		perror("open fail");
 		return -1;
 	}
  
@@ -32,16 +26,14 @@ int main(int argc, char **argv)
  
 	//交错模式---
 	snd_pcm_hw_params_set_access(handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
- 
 	//设置双声道，小端格式，16位
 	snd_pcm_hw_params_set_format(handle, params, SND_PCM_FORMAT_S16_LE);
 	snd_pcm_hw_params_set_channels(handle, params, 2);
- 
-	//设置采样率（44100标准MP3采样频率）
+	//设置采样率
 	int val = 44100;
 	snd_pcm_hw_params_set_rate_near(handle,params,&val,0);
  
-	//设在采样周期,（最好是让系统自动设置，这一步可以省略）
+	//设在采样周期
 	int  frames;
 	//snd_pcm_hw_params_set_period_size_near(handle,params,(snd_pcm_uframes_t*)&frames,0);
  
@@ -49,41 +41,43 @@ int main(int argc, char **argv)
 	r = snd_pcm_hw_params(handle, params);
 	if(r < 0)
 	{
-		perror("snd pcm params fail");
+		perror("set params fail");
 		return -1;
 	}
- 
+	
  
 	//16--2--（一帧数据4个字节）
-	//获取一个周期有多少帧数据，一个周期一个周期方式处理音频数据。
+	//获取一个周期有多少帧数据
 	snd_pcm_hw_params_get_period_size(params,(snd_pcm_uframes_t*)&frames,0);
-	unsigned char *buffer = malloc(4*frames);//由于双通道，16bit，每个通道2个字节，一个周期所需要的空间为4个字节*帧数
+	snd_pcm_hw_params_get_rate(params,&val,0);
+	printf("frames=%d, rate=%d\n", frames, val);
+	unsigned char *buffer = malloc(4*frames);
  
-	
 	//初始化网络
-	int sockfd = socket (AF_INET, SOCK_DGRAM, 0);
+	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 	struct sockaddr_in addr;
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
-	addr.sin_port = htons(atoi(argv[1]));//端口号，比如9000
-	addr.sin_addr.s_addr = htonl(INADDR_ANY);//本地IP
+	addr.sin_port = htons(atoi(argv[2]));//服务器的端口号
+	addr.sin_addr.s_addr = inet_addr(argv[1]);//服务器IP
  
-	//绑定
-	int bret = bind(sockfd, (struct sockaddr*)&addr, sizeof(addr));
-	if(bret < 0)
-	{
-		perror("bind fail");
-		exit(1);
-	}
+	int ret = 0;
 	while(1)
 	{
-		//接收数据
-		bret = recvfrom(sockfd, buffer, frames*4, 0, NULL, NULL);
-		if(bret <= 0){break;}
-		printf("recv:%d\n", bret);
-		snd_pcm_writei(handle,buffer,frames);
+		//录音---返回帧数
+		ret = snd_pcm_readi(handle,buffer,frames);
+		if(ret != frames)
+		{
+			snd_pcm_prepare(handle);
+			continue;
+		}
+		//udp发送--
+		ret = sendto(sockfd, buffer, frames*4, 0, (struct sockaddr*)&addr, sizeof(addr));
+		if(ret != frames*4)
+		{
+			break;
+		}
 	}
- 
 	close(sockfd);
 	//关闭
 	snd_pcm_drain(handle);
