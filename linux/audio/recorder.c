@@ -30,11 +30,11 @@ int main(int argc, char **argv)
 	snd_pcm_hw_params_set_format(handle, params, SND_PCM_FORMAT_S16_LE);
 	snd_pcm_hw_params_set_channels(handle, params, 2);
 	//设置采样率
-	int val = 44100;
+	int val = 16000;
 	snd_pcm_hw_params_set_rate_near(handle,params,&val,0);
  
 	//设在采样周期
-	int  frames;
+	int frames;
 	//snd_pcm_hw_params_set_period_size_near(handle,params,(snd_pcm_uframes_t*)&frames,0);
  
 	//设置好的参数回写设备
@@ -54,14 +54,16 @@ int main(int argc, char **argv)
 	unsigned char *buffer = malloc(4*frames);
  
 	//初始化网络
-	int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-	struct sockaddr_in addr;
-	memset(&addr, 0, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(atoi(argv[2]));//服务器的端口号
-	addr.sin_addr.s_addr = inet_addr(argv[1]);//服务器IP
+	// int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+	// struct sockaddr_in addr;
+	// memset(&addr, 0, sizeof(addr));
+	// addr.sin_family = AF_INET;
+	// addr.sin_port = htons(atoi(argv[2]));//服务器的端口号
+	// addr.sin_addr.s_addr = inet_addr(argv[1]);//服务器IP
  
 	int ret = 0;
+
+	FILE *fp = fopen("1.wav","wb");
 	while(1)
 	{
 		//录音---返回帧数
@@ -72,13 +74,15 @@ int main(int argc, char **argv)
 			continue;
 		}
 		//udp发送--
-		ret = sendto(sockfd, buffer, frames*4, 0, (struct sockaddr*)&addr, sizeof(addr));
-		if(ret != frames*4)
-		{
-			break;
-		}
+		fwrite(buffer,sizeof(char *),sizeof(buffer),fp);
+		// ret = sendto(sockfd, buffer, frames*4, 0, (struct sockaddr*)&addr, sizeof(addr));
+		// if(ret != frames*4)
+		// {
+		// 	break;
+		// }
 	}
-	close(sockfd);
+	fclose(fp);
+	//close(sockfd);
 	//关闭
 	snd_pcm_drain(handle);
 	snd_pcm_close(handle);

@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/flc/nccd_proj/Alsa-Demo/playfile/file_process.c
+file_process.h
+/home/flc/nccd_proj/Alsa-Demo/playfile/file_process.h
+
+/home/flc/nccd_proj/Alsa-Demo/playfile/file_process.h
+stdlib.h
+-
+stdio.h
+-
+string.h
+-
+

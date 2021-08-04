@@ -1,17 +1,7 @@
 #include "list.h"
 #include <stdlib.h>
 #include <assert.h>
-struct list_node_s {
-    struct list_node_s *next;
-    void *data;
-};
-
-typedef struct list_s {
-    list_node_t *head;
-    list_node_t *tail;
-    size_t length;
-    list_free_cb free_cb;
-} list_t;
+#include <stdio.h>
 
 //static list_node_t *list_free_node_(list_t *list, list_node_t *node);
 
@@ -114,7 +104,7 @@ bool list_insert_after(list_t *list, list_node_t *prev_node, void *data) {
     assert(data != NULL);
     list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t));
     if (!node) {
-        OSI_TRACE_ERROR("%s malloc failed.\n", __FUNCTION__ );
+        printf("%s malloc failed.\n", __FUNCTION__ );
         return false;
     }
     node->next = prev_node->next;
@@ -133,7 +123,7 @@ bool list_prepend(list_t *list, void *data)
     assert(data != NULL);
     list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t));
     if (!node) {
-        OSI_TRACE_ERROR("%s malloc failed.\n", __FUNCTION__ );
+        printf("%s malloc failed.\n", __FUNCTION__ );
         return false;
     }
     node->next = list->head;
@@ -152,7 +142,7 @@ bool list_append(list_t *list, void *data)
     assert(data != NULL);
     list_node_t *node = (list_node_t *)malloc(sizeof(list_node_t));
     if (!node) {
-        OSI_TRACE_ERROR("%s malloc failed.\n", __FUNCTION__ );
+        printf("%s malloc failed.\n", __FUNCTION__ );
         return false;
     }
     node->next = NULL;
@@ -242,17 +232,17 @@ void list_clear(list_t *list)
 
 list_node_t *list_foreach(const list_t *list, list_iter_cb callback, void *context)
 {
-  assert(list != NULL);
-  assert(callback != NULL);
-  list_node_t *node;
-  for (node = list->head; node; ) {
-    list_node_t *next = node->next;
-    if (!callback(node->data, context)) {
-      return node;
+    assert(list != NULL);
+    assert(callback != NULL);
+    list_node_t *node;
+    for (node = list->head; node; ) {
+        list_node_t *next = node->next;
+        if (!callback(node->data, context)) {
+            return node;
+        }
+        node = next;
     }
-    node = next;
-  }
-  return NULL;
+    return NULL;
 }
 
 list_node_t *list_begin(const list_t *list)

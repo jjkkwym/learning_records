@@ -3,14 +3,26 @@
 
 #include <stdbool.h>
 #include <stddef.h>
-struct list_node_s;
-typedef struct list_node_s list_node_t;
+// struct list_node_s;
+// typedef struct list_node_s list_node_t;
 
-struct list_s;
-typedef struct list_s list_t;
+// struct list_s;
+// typedef struct list_s list_t;
 
 typedef void (*list_free_cb)(void *data);
 typedef bool (*list_iter_cb)(void *data, void *context);
+
+typedef struct list_node_s {
+    struct list_node_s *next;
+    void *data;
+}list_node_t;
+
+typedef struct list_s {
+    list_node_t *head;
+    list_node_t *tail;
+    size_t length;
+    list_free_cb free_cb;
+} list_t;
 
 // Returns a new, empty list. Returns NULL if not enough memory could be allocated
 // for the list structure. The returned list must be freed with |list_free|. The

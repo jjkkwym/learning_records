@@ -1,0 +1,1 @@
+/usr/bin/cc      CMakeFiles/playpcm.dir/file_process.c.o CMakeFiles/playpcm.dir/main.c.o  -o playpcm -rdynamic -lm -lasound -lpthread 
