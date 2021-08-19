@@ -59,7 +59,7 @@ int main(void)
 
     pri_key_len = BIO_pending(pri);
     pub_key_len = BIO_pending(pub);
-
+    printf("len1:%ld\nlen2:%ld \n", pri_key_len,pub_key_len);
     pri_key = malloc(pri_key_len + 1);
     pub_key = malloc(pub_key_len + 1);
 
