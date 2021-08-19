@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
     {
         printf("WAV file data process.\n");
         dataBuffer = (char *)read_wav(fileName, &dataLen);
+        dataLen = 353162;
     }
     else
     {
@@ -79,7 +80,7 @@ int main(int argc, char *argv[])
         snd_pcm_prepare(handle); //prepare the stream to palyback.
         printf("Playback times: %d\n", i + 1);
         fflush(stdout);
-        frames = snd_pcm_writei(handle, dataBuffer, dataLen / 2);
+        frames = snd_pcm_writei(handle, dataBuffer, dataLen);
         if (frames == -EPIPE)
         {
             printf("Playback underrun occurred.\n");
@@ -94,7 +95,7 @@ int main(int argc, char *argv[])
         {
             printf("Short write (expected %li, wrote %li)\n", (long)dataLen / 2, frames);
         }
-
+        printf("frames:%ld\n",frames);
         printf("Playback over. Delay 3 seconds.\n");
         fflush(stdout);
         delayCount = 3;
@@ -106,7 +107,16 @@ int main(int argc, char *argv[])
             delayCount--;
         }
     }
-
+    while(1)
+    {
+        
+    }
+    
+    
+    
+    
+    
+    
     snd_pcm_drain(handle); //Stop a PCM preserving pending frames.
     snd_pcm_close(handle);
     if (NULL != dataBuffer)

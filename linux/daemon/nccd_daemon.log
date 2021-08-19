@@ -1,111 +1,72 @@
-log_fd:0
-#/home/flc/project/learning_records/linux/daemon/test process not exist or execute
-value process num:2
-nccd_server process started
-ftp process started
-process proc_pid[1]:28210 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28222
-process proc_pid[1]:28222 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28234
-process proc_pid[1]:28234 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28246
-process proc_pid[1]:28246 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28249
-process proc_pid[1]:28249 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28260
-process proc_pid[1]:28260 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28261
-process proc_pid[1]:28261 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28272
-process proc_pid[1]:28272 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28278
-process proc_pid[1]:28278 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28284
-process proc_pid[1]:28284 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28296
-process proc_pid[1]:28296 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28297
-process proc_pid[1]:28297 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28308
-process proc_pid[1]:28308 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28309
-process proc_pid[1]:28309 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28320
-process proc_pid[1]:28320 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28332
-process proc_pid[1]:28332 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28335
-process proc_pid[1]:28335 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28347
-process proc_pid[1]:28347 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28348
-process proc_pid[1]:28348 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28360
-process proc_pid[1]:28360 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28365
-process proc_pid[1]:28365 exit normal
-the return code is 0
-try restart proc_pid[1]..
-ftp process started
-start proc_pid[1] = 28372
-signal recv,exit
+[23:29:48.054]#/home/flc/project/learning_records/linux/daemon/test3 process not exist or execute
+[23:29:48.054]#/home/flc/project/learning_records/linux/daemon/test4 process not exist or execute
+[23:29:48.054]#/home/flc/project/learning_records/linux/daemon/test5 process not exist or execute
+[23:29:48.054]value process num:4
+[23:29:48.054]nccd_server process started
+[23:29:48.055]test process started
+[23:29:48.055]test1 process started
+[23:29:48.055]test2 process started
+[23:29:48.055]proc_pid[0]:81680
+[23:29:48.055]proc_pid[1]:81681
+[23:29:48.055]proc_pid[2]:81682
+[23:29:48.055]proc_pid[3]:81683
+[23:29:53.073]process proc_pid[1]:81681 exit normal
+[23:29:53.074]the return code is 0
+[23:29:53.074]try restart proc_pid[1]..
+[23:29:53.074]test process started
+[23:29:53.075]start proc_pid[1] = 81701
+[23:29:53.077]process proc_pid[2]:81682 exit normal
+[23:29:53.078]the return code is 0
+[23:29:53.078]try restart proc_pid[2]..
+[23:29:53.079]test1 process started
+[23:29:53.079]start proc_pid[2] = 81702
+[23:29:53.081]process proc_pid[3]:81683 exit normal
+[23:29:53.081]the return code is 0
+[23:29:53.081]try restart proc_pid[3]..
+[23:29:53.082]test2 process started
+[23:29:53.082]start proc_pid[3] = 81703
+[23:29:58.078]process proc_pid[1]:81701 exit normal
+[23:29:58.078]the return code is 0
+[23:29:58.078]try restart proc_pid[1]..
+[23:29:58.078]test process started
+[23:29:58.078]start proc_pid[1] = 81710
+[23:29:58.087]process proc_pid[2]:81702 exit normal
+[23:29:58.087]the return code is 0
+[23:29:58.087]try restart proc_pid[2]..
+[23:29:58.087]test1 process started
+[23:29:58.087]start proc_pid[2] = 81711
+[23:29:58.090]process proc_pid[3]:81703 exit normal
+[23:29:58.090]the return code is 0
+[23:29:58.090]try restart proc_pid[3]..
+[23:29:58.090]test2 process started
+[23:29:58.090]start proc_pid[3] = 81712
+[23:30:03.084]process proc_pid[1]:81710 exit normal
+[23:30:03.085]the return code is 0
+[23:30:03.085]try restart proc_pid[1]..
+[23:30:03.086]test process started
+[23:30:03.086]start proc_pid[1] = 81719
+[23:30:03.099]process proc_pid[2]:81711 exit normal
+[23:30:03.099]the return code is 0
+[23:30:03.100]try restart proc_pid[2]..
+[23:30:03.101]test1 process started
+[23:30:03.101]start proc_pid[2] = 81720
+[23:30:03.110]process proc_pid[3]:81712 exit normal
+[23:30:03.110]the return code is 0
+[23:30:03.110]try restart proc_pid[3]..
+[23:30:03.110]test2 process started
+[23:30:03.110]start proc_pid[3] = 81721
+[23:30:08.095]process proc_pid[1]:81719 exit normal
+[23:30:08.096]the return code is 0
+[23:30:08.096]try restart proc_pid[1]..
+[23:30:08.096]test process started
+[23:30:08.096]start proc_pid[1] = 81729
+[23:30:08.108]process proc_pid[2]:81720 exit normal
+[23:30:08.115]the return code is 0
+[23:30:08.116]try restart proc_pid[2]..
+[23:30:08.116]test1 process started
+[23:30:08.116]start proc_pid[2] = 81730
+[23:30:08.123]process proc_pid[3]:81721 exit normal
+[23:30:08.123]the return code is 0
+[23:30:08.123]try restart proc_pid[3]..
+[23:30:08.124]test2 process started
+[23:30:08.124]start proc_pid[3] = 81731

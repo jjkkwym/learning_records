@@ -41,19 +41,19 @@ void log_with_level(log_level_t log_level,char *format,...)
     va_end(args);    
     switch(log_level)
     {
-    case  LOG_LEVEL_INFO:
-        printf(LOG_INFO_COLOR"[INFO]   "RESET"%s\n",buf);
-        break;
-    case  LOG_LEVEL_DEBUG:
-        PRINT(LOG_DEBUG_COLOR"[DEBUG]  "RESET"%s\n",buf);
-        break;
-    case  LOG_LEVEL_WARNING:
-        PRINT(LOG_WARNING_COLOR"[WARNING]"RESET"%s\n",buf);
-        break;
-    case  LOG_LEVEL_ERROR:
-        PRINT(LOG_ERROR_COLOR"[ERROR]  "RESET"%s\n",buf);
-        break;
-    default:
-        break;
+        case LOG_LEVEL_INFO:
+            printf(LOG_INFO_COLOR"[INFO]   "RESET"%s\n",buf);
+            break;
+        case LOG_LEVEL_DEBUG:
+            PRINT(LOG_DEBUG_COLOR"[DEBUG]  "RESET"%s\n",buf);
+            break;
+        case LOG_LEVEL_WARNING:
+            PRINT(LOG_WARNING_COLOR"[WARNING]"RESET"%s\n",buf);
+            break;
+        case LOG_LEVEL_ERROR:
+            PRINT(LOG_ERROR_COLOR"[ERROR]  "RESET"%s\n",buf);
+            break;
+        default:
+            break;
     }   
 }

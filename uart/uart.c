@@ -1,4 +1,12 @@
-#include "common.h"
+//#include "common.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <math.h>
+#include <ctype.h>
 #include <termios.h>
 #include <time.h>
 #include <fcntl.h>
@@ -61,12 +69,12 @@ bool uart_open(void)
     uart_fd = open(device_name, flags);
     if (uart_fd == -1)
     {
-        DEBUG("Unable to open port %s\n", device_name);
+        printf("Unable to open port %s\n", device_name);
         return false;
     }
     if (tcgetattr(uart_fd, &toptions) < 0)
     {
-        DEBUG("Couldn't get term attributes\n");
+        printf("Couldn't get term attributes\n");
         return false;
     }
     cfmakeraw(&toptions);
@@ -82,7 +90,7 @@ bool uart_open(void)
     cfsetospeed(&toptions, B115200);
     if (tcsetattr(uart_fd, TCSANOW, &toptions) < 0)
     {
-        DEBUG("Coundn't set term attributes");
+        printf("Coundn't set term attributes");
         return false;
     }
     return true;
@@ -143,14 +151,14 @@ bool uart_init()
     if(rc > 0)
     {
         pthread_create(&read_p,NULL,uart_read,NULL);
-        //DEBUG("create uart read thread");
+        //printf("create uart read thread");
         pthread_create(&write_p,NULL,uart_write,NULL);
-        //DEBUG("create uart write thread");
+        //printf("create uart write thread");
     }
     return rc;
 }
 
-static bool shell_cmd(char *cmd,char *cmd_return,uint16_t len)
+/* static bool shell_cmd(char *cmd,char *cmd_return,uint16_t len)
 {
 	FILE *fstream = NULL;      
     char buf[128];    
@@ -175,12 +183,12 @@ static bool shell_cmd(char *cmd,char *cmd_return,uint16_t len)
     }  
     pclose(fstream);
 	return 1;
-}
+} */
 int main(int argc,char *argv[])  //UASGE ./uart /dev/ttyUSBx
 {
     char buf[1024];
-    shell_cmd("ls -l",buf,sizeof(buf));
-    printf("buf:%s\n",buf);
+    //shell_cmd("ls -l",buf,sizeof(buf));
+    //printf("buf:%s\n",buf);
 
     printf("argc:%d\n",argc);
     if(argc == 2)    

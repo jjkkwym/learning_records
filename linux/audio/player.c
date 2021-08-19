@@ -39,8 +39,48 @@ int main(int argc, char **argv)
 		perror("snd pcm open fail");
 		return -1;
 	}
- 
-	//设置参数
+	int err;
+	if ((err = snd_pcm_set_params(handle,
+                                  SND_PCM_FORMAT_S16_LE,
+                                  SND_PCM_ACCESS_RW_INTERLEAVED,
+                                  1,
+                                  16000,
+                                  1,
+                                  500000)) < 0)
+    { /* 0.5sec */
+        printf("Playback open error: %s\n", snd_strerror(err));
+        exit(EXIT_FAILURE);
+    }
+	char *data;
+	int len;
+	data = read_wav("./test.wav",&len);
+	len = 353162;
+
+	snd_pcm_sframes_t frames;
+	snd_pcm_writei(handle, data,len/2);
+	if (frames == -EPIPE)
+    {
+        printf("Playback underrun occurred.\n");
+        snd_pcm_prepare(handle);
+    }
+    else if (frames < 0)
+    {
+        printf("snd_pcm_writei failed: %s\n", snd_strerror(frames));
+        frames = snd_pcm_recover(handle, frames, 0); //Recover the stream state from an error or suspend, such as -EINT, -EPIPE and -ESTRPIPR, for next I/O.
+    }
+    else if (frames < len)
+    {
+        printf("Short write (expected %i, wrote %li)\n", len, frames);
+    }
+	
+	printf("frame:%ld\n",frames);
+	printf("play over\n");
+	free(data);
+	snd_pcm_drain(handle);
+	snd_pcm_close(handle);
+
+
+/* 	//设置参数
 	//初始化pcm属性
 	snd_pcm_hw_params_alloca(&params);
 	snd_pcm_hw_params_any(handle, params);
@@ -52,60 +92,39 @@ int main(int argc, char **argv)
 	snd_pcm_hw_params_set_format(handle, params, SND_PCM_FORMAT_S16_LE);
 	snd_pcm_hw_params_set_channels(handle, params, 1);
  
-	//设置采样率（44100标准MP3采样频率）
+	//设置采样率
 	int val = 16000;
 	snd_pcm_hw_params_set_rate_near(handle,params,&val,0);
  
 	//设在采样周期,（最好是让系统自动设置，这一步可以省略）
-	int  frames;
+	int  frames; */
 	//snd_pcm_hw_params_set_period_size_near(handle,params,(snd_pcm_uframes_t*)&frames,0);
  
 	//设置好的参数回写设备
-	r = snd_pcm_hw_params(handle, params);
+	/* r = snd_pcm_hw_params(handle, params);
 	if(r < 0)
 	{
 		perror("snd pcm params fail");
 		return -1;
-	}
+	} */
  
  
-	//16--2--（一帧数据4个字节）
+/* 	//16--2--（一帧数据4个字节）
 	//获取一个周期有多少帧数据，一个周期一个周期方式处理音频数据。
 	snd_pcm_hw_params_get_period_size(params,(snd_pcm_uframes_t*)&frames,0);
-	unsigned char *buffer = malloc(4*frames);//由于双通道，16bit，每个通道2个字节，一个周期所需要的空间为4个字节*帧数
+	//unsigned char *buffer = malloc(4*frames);//由于双通道，16bit，每个通道2个字节，一个周期所需要的空间为4个字节*帧数
  
-	
-	//初始化网络
-	// int sockfd = socket (AF_INET, SOCK_DGRAM, 0);
-	// struct sockaddr_in addr;
-	// memset(&addr, 0, sizeof(addr));
-	// addr.sin_family = AF_INET;
-	// addr.sin_port = htons(atoi(argv[1]));//端口号，比如9000
-	// addr.sin_addr.s_addr = htonl(INADDR_ANY);//本地IP
- 
-	// //绑定
-	// int bret = bind(sockfd, (struct sockaddr*)&addr, sizeof(addr));
-	// if(bret < 0)
-	// {
-	// 	perror("bind fail");
-	// 	exit(1);
-	// }
 	char *data;
 	int len;
-	data = read_wav("test.wav",&len);
-	// while(1)
-	// {}
-		//接收数据
-		// bret = recvfrom(sockfd, buffer, frames*4, 0, NULL, NULL);
-		// if(bret <= 0){break;}
-		// printf("recv:%d\n", bret);
-	snd_pcm_writei(handle,data,len/2);
+	data = read_wav("./test.wav",&len);
+	len = 353162;
+	snd_pcm_writei(handle,data,len);
 	printf("play over\n");
 	free(data);
 	// close(sockfd);
 	//关闭
 	snd_pcm_drain(handle);
 	snd_pcm_close(handle);
-	free(buffer);
-	return 0;
+	//free(buffer);
+	return 0; */
 }

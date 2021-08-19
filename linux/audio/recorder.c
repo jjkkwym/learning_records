@@ -28,7 +28,7 @@ int main(int argc, char **argv)
 	snd_pcm_hw_params_set_access(handle, params, SND_PCM_ACCESS_RW_INTERLEAVED);
 	//设置双声道，小端格式，16位
 	snd_pcm_hw_params_set_format(handle, params, SND_PCM_FORMAT_S16_LE);
-	snd_pcm_hw_params_set_channels(handle, params, 2);
+	snd_pcm_hw_params_set_channels(handle, params, 1);
 	//设置采样率
 	int val = 16000;
 	snd_pcm_hw_params_set_rate_near(handle,params,&val,0);
