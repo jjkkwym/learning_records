@@ -115,16 +115,17 @@ int main()
 
     unsigned char encrypted[4098] = {};
     unsigned char decrypted[4098] = {};
-
-    int encrypted_length = public_encrypt(plainText, strlen(plainText), publicKey, encrypted);
-    if (encrypted_length == -1)
+    int len;
+    
+    len = public_encrypt(plainText, strlen(plainText), publicKey, encrypted);
+    if (len == -1)
     {
         printLastError("Public Encrypt failed ");
         exit(0);
     }
-    printf("Encrypted length =%d\n", encrypted_length);
+    printf("Encrypted length =%d\n", len);
 
-    int decrypted_length = private_decrypt(encrypted, encrypted_length, privateKey, decrypted);
+    int decrypted_length = private_decrypt(encrypted, len, privateKey, decrypted);
     if (decrypted_length == -1)
     {
         printLastError("Private Decrypt failed ");
@@ -133,15 +134,15 @@ int main()
     printf("Decrypted Text =%s\n", decrypted);
     printf("Decrypted Length =%d\n", decrypted_length);
 
-    encrypted_length = private_encrypt(plainText, strlen(plainText), privateKey, encrypted);
-    if (encrypted_length == -1)
+    len = private_encrypt(plainText, strlen(plainText), privateKey, encrypted);
+    if (len == -1)
     {
         printLastError("Private Encrypt failed");
         exit(0);
     }
-    printf("Encrypted length =%d\n", encrypted_length);
+    printf("Encrypted length =%d\n", len);
 
-    decrypted_length = public_decrypt(encrypted, encrypted_length, publicKey, decrypted);
+    decrypted_length = public_decrypt(encrypted, len, publicKey, decrypted);
     if (decrypted_length == -1)
     {
         printLastError("Public Decrypt failed");

@@ -8,7 +8,19 @@
 #define PUB_EXP 3
 #define PRINT_KEYS
 #define WRITE_TO_FILE
-RSA * createRSA(unsigned char * key,int public)
+int padding = RSA_PKCS1_PADDING;
+
+char publicKey[] = "-----BEGIN PUBLIC KEY-----\n"
+                   "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy8Dbv8prpJ/0kKhlGeJY\n"
+                   "ozo2t60EG8L0561g13R29LvMR5hyvGZlGJpmn65+A4xHXInJYiPuKzrKUnApeLZ+\n"
+                   "vw1HocOAZtWK0z3r26uA8kQYOKX9Qt/DbCdvsF9wF8gRK0ptx9M6R13NvBxvVQAp\n"
+                   "fc9jB9nTzphOgM4JiEYvlV8FLhg9yZovMYd6Wwf3aoXK891VQxTr/kQYoq1Yp+68\n"
+                   "i6T4nNq7NWC+UNVjQHxNQMQMzU6lWCX8zyg3yH88OAQkUXIXKfQ+NkvYQ1cxaMoV\n"
+                   "PpY72+eVthKzpMeyHkBn7ciumk5qgLTEJAfWZpe4f4eFZj/Rc8Y8Jj2IS5kVPjUy\n"
+                   "wQIDAQAB\n"
+                   "-----END PUBLIC KEY-----\n";
+
+RSA * create_RSA(unsigned char * key,int mode)
 {
     RSA *rsa= NULL;
     BIO *keybio ;
@@ -18,7 +30,7 @@ RSA * createRSA(unsigned char * key,int public)
         printf( "Failed to create key BIO");
         return 0;
     }
-    if(public)
+    if(mode)
     {
         rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa,NULL, NULL);
     }
@@ -32,6 +44,44 @@ RSA * createRSA(unsigned char * key,int public)
     }
  
     return rsa;
+}
+
+int public_encrypt(unsigned char *data, int data_len, unsigned char *key, unsigned char *encrypted)
+{
+    RSA *rsa = create_RSA(key, 1);
+    int result = RSA_public_encrypt(data_len, data, encrypted, rsa, padding);
+    return result;
+}
+
+int private_decrypt(unsigned char *enc_data, int data_len, unsigned char *key, unsigned char *decrypted)
+{
+    RSA *rsa = create_RSA(key, 0);
+    int result = RSA_private_decrypt(data_len, enc_data, decrypted, rsa, padding);
+    return result;
+}
+
+int private_encrypt(unsigned char *data, int data_len, unsigned char *key, unsigned char *encrypted)
+{
+    RSA *rsa = create_RSA(key, 0);
+    int result = RSA_private_encrypt(data_len, data, encrypted, rsa, padding);
+    return result;
+}
+
+int public_decrypt(unsigned char *enc_data, int data_len, unsigned char *key, unsigned char *decrypted)
+{
+    RSA *rsa = create_RSA(key, 1);
+    int result = RSA_public_decrypt(data_len, enc_data, decrypted, rsa, padding);
+    return result;
+}
+
+void printLastError(char *msg)
+{
+    char *err = malloc(130);
+    ;
+    ERR_load_crypto_strings();
+    ERR_error_string(ERR_get_error(), err);
+    printf("%s ERROR: %s\n", msg, err);
+    free(err);
 }
 
 int main(void)
@@ -55,11 +105,12 @@ int main(void)
     BIO *pub = BIO_new(BIO_s_mem());
 
     PEM_write_bio_RSAPrivateKey(pri, keypair, NULL, NULL, 0, NULL, NULL);
-    PEM_write_bio_RSAPublicKey(pub, keypair);
+    //PEM_write_bio_RSAPublicKey(pub, keypair);
+    PEM_write_bio_RSA_PUBKEY(pub, keypair);
 
     pri_key_len = BIO_pending(pri);
     pub_key_len = BIO_pending(pub);
-    printf("len1:%ld\nlen2:%ld \n", pri_key_len,pub_key_len);
+    printf("\nlen1:%ld\nlen2:%ld \n", pri_key_len,pub_key_len);
     pri_key = malloc(pri_key_len + 1);
     pub_key = malloc(pub_key_len + 1);
 
@@ -68,6 +119,7 @@ int main(void)
 
     pri_key[pri_key_len] = '\0';
     pub_key[pub_key_len] = '\0';
+
 
 #ifdef PRINT_KEYS
     printf("\n%s\n%s\n", pri_key, pub_key);
@@ -79,55 +131,44 @@ int main(void)
     fgets(msg, KEY_LENGTH - 1, stdin);
     msg[strlen(msg) - 1] = '\0';
 
-    RSA *pub1= createRSA((unsigned char *)pub_key,1);
-    //RSA *p_pub1 = &pub1;
-    // if((pub1 = PEM_read_bio_RSAPublicKey(pub,&pub1,NULL,NULL)) == NULL)
-    // {
-    //     printf("error\n");
-    //     //return 0;
-    // }
+    RSA *pub1= create_RSA((unsigned char *)pub_key,1);
+    RSA *pri1= create_RSA((unsigned char *)pri_key,0);
 
-    // Encrypt the message
     encrypt = malloc(RSA_size(keypair));
-    int encrypt_len;
-    err = malloc(130);
-    if ((encrypt_len = RSA_public_encrypt(strlen(msg) + 1, (unsigned char *)msg, (unsigned char *)encrypt,
-                                          keypair, RSA_PKCS1_OAEP_PADDING)) == -1)
+    decrypt = malloc(RSA_size(keypair));
+    int len = public_encrypt(msg, strlen(msg), pub_key, encrypt);
+    if (len == -1)
     {
-        ERR_load_crypto_strings();
-        ERR_error_string(ERR_get_error(), err);
-        fprintf(stderr, "Error encrypting message: %s\n", err);
-        goto free_stuff;
+        printLastError("Public Encrypt failed ");
+        exit(0);
     }
+    printf("Encrypted length =%d\n", len);
 
-#ifdef WRITE_TO_FILE
-    // Write the encrypted message to a file
-    FILE *out = fopen("out.bin", "w");
-    fwrite(encrypt, sizeof(*encrypt), RSA_size(keypair), out);
-    fclose(out);
-    printf("Encrypted message written to file.\n");
-    free(encrypt);
-    encrypt = NULL;
-
-    // Read it back
-    printf("Reading back encrypted message and attempting decryption...\n");
-    encrypt = malloc(RSA_size(keypair));
-    out = fopen("out.bin", "r");
-    fread(encrypt, sizeof(*encrypt), RSA_size(keypair), out);
-    fclose(out);
-#endif
-
-    // Decrypt it
-    decrypt = malloc(encrypt_len);
-    if (RSA_private_decrypt(encrypt_len, (unsigned char *)encrypt, (unsigned char *)decrypt,
-                            keypair, RSA_PKCS1_OAEP_PADDING) == -1)
+    int decrypted_length = private_decrypt(encrypt, len, pri_key, decrypt);
+    if (decrypted_length == -1)
     {
-        ERR_load_crypto_strings();
-        ERR_error_string(ERR_get_error(), err);
-        fprintf(stderr, "Error decrypting message: %s\n", err);
-        goto free_stuff;
+        printLastError("Private Decrypt failed ");
+        exit(0);
     }
-    printf("Decrypted message: %s\n", decrypt);
+    printf("Decrypted Text =%s\n", decrypt);
+    printf("Decrypted Length =%d\n", decrypted_length);
+
+    len = private_encrypt(msg, strlen(msg), pri_key, encrypt);
+    if (len == -1)
+    {
+        printLastError("Private Encrypt failed");
+        exit(0);
+    }
+    printf("Encrypted length =%d\n", len);
+
+    decrypted_length = public_decrypt(encrypt, len, pub_key, decrypt);
+    if (decrypted_length == -1)
+    {
+        printLastError("Public Decrypt failed");
+        exit(0);
+    }
+    printf("Decrypted Text =%s\n", decrypt);
+    printf("Decrypted Length =%d\n", decrypted_length);
 
 free_stuff:
     RSA_free(keypair);
@@ -137,7 +178,7 @@ free_stuff:
     free(pub_key);
     free(encrypt);
     free(decrypt);
-    free(err);
+    //free(err);
 
     return 0;
 }
