@@ -1,0 +1,3 @@
+#BINARY = 12345678-4321-8765-9b74f3fc357c7c61
+BINARY = 21d38c70-f25a-4b95-ac25-07d1bfdbc112
+include ta_common.mk

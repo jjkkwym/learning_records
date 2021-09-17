@@ -1,0 +1,36 @@
+{
+    "sig": {
+        "public_key": "a95e59d16cc9cfa8cdc998d28909c886e6a7001616922ef7fc37ec5c94cb2951",
+        "method": "ecdsa",
+        "hash": "QrIRahpiFcuVuMpbLrpaTjiinW7l0a5CvuunqOxzjPw=",
+        "hash_method": "sha256",
+        "signature": "6VzyDTyvO7Ysg6X0aOYE6tBZ/aELbCjvaIiKTC/t8lrZFtwlmTIbRPXPbILxt1K8xV2QSkJAItPVSzRqP59XIw=="
+    },
+    "payload": {
+        "device_id": "hub_device_0910",
+        "primary_device_id": "hub_device_0910",
+        "version_reports": [
+            {
+                "sig": {
+                    "public_key": "a95e59d16cc9cfa8cdc998d28909c886e6a7001616922ef7fc37ec5c94cb2951",
+                    "method": "ecdsa",
+                    "hash": "QrIRahpiFcuVuMpbLrpaTjiinW7l0a5CvuunqOxzjPw=",
+                    "hash_method": "sha256",
+                    "signature": "6VzyDTyvO7Ysg6X0aOYE6tBZ/aELbCjvaIiKTC/t8lrZFtwlmTIbRPXPbILxt1K8xV2QSkJAItPVSzRqP59XIw=="
+                },
+                "payload": {
+                    "device_id": "hub_device_0910",
+                    "model": "DashCam_C8_0806",
+                    "version": "1.0.0.0",
+                    "filename": "hubimage.exe",
+                    "length": "1023",
+                    "hash": "QrIRahpiFcuVuMpbLrpaTjiinW7l0a5CvuunqOxzjPw=",
+                    "hash_method": "sha256",
+                    "security_attack": "no",
+                    "latest_verification_time": "2020-09-22T03:10:38.292160+00:00",
+                    "counter": "1"
+                }
+            }
+        ]
+    }
+}

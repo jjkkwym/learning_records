@@ -1,0 +1,36 @@
+{
+    "sig": {
+        "public_key": "[The per-device RSA key's public key]",
+        "method": "rsa",
+        "hash": "[The payload JSON object's hash value (hash algorithm is specified in hash_method field)]",
+        "hash_method": "SHA-256",
+        "signature": "[The payload JSON object's signature]"
+    },
+    "payload": {
+        "device_id": "[The device serial number]",
+        "primary_device_id": "[The device serial number]",
+        "version_reports": [
+            {
+                "sig": {
+                    "public_key": "[The per-device RSA key's public key]",
+                    "method": "rsa",
+                    "hash": "[The payload JSON object's hash value (hash algorithm is specified in hash_method field)]",
+                    "hash_method": "SHA-256",
+                    "signature": "[The payload JSON object's signature]"
+                },
+                "payload": {
+                    "device_id": "[The device serial number]",
+                    "model": "[The device model nuber]",
+                    "version": "[Current firmware version in major_ver.minor_ver.rev_ver.build_ver format]",
+                    "filename": "[Current installed image filename w/o version]",
+                    "length": "[Current installed image size]",
+                    "hash": "[Firmware image file hash value (hash algorithm is specified in hash_method field)]",
+                    "hash_method": "sha256",
+                    "security_attack": "no",
+                    "latest_verification_time": "2020-09-22T03:10:38.292160+00:00",
+                    "counter": "[An random positive integer]"
+                }
+            }
+        ]
+    }
+}

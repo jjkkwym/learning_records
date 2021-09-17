@@ -1,0 +1,33 @@
+{
+    "sig": {
+        "public_key": "a95e59d16cc9cfa8cdc998d28909c886e6a7001616922ef7fc37ec5c94cb2951",
+        "method": "ecdsa",
+        "hash": "QrIRahpiFcuVuMpbLrpaTjiinW7l0a5CvuunqOxzjPw=",
+        "hash_method": "sha256",
+        "signature": "6VzyDTyvO7Ysg6X0aOYE6tBZ/aELbCjvaIiKTC/t8lrZFtwlmTIbRPXPbILxt1K8xV2QSkJAItPVSzRqP59XIw=="
+    },
+    "payload": {
+        "device_id": "hub_device_0910",
+        "primary_device_id": "hub_device_0910",
+        "update_reports": [
+            {
+                "sig": {
+                    "public_key": "a95e59d16cc9cfa8cdc998d28909c886e6a7001616922ef7fc37ec5c94cb2951",
+                    "method": "ecdsa",
+                    "hash": "QrIRahpiFcuVuMpbLrpaTjiinW7l0a5CvuunqOxzjPw=",
+                    "hash_method": "sha256",
+                    "signature": "6VzyDTyvO7Ysg6X0aOYE6tBZ/aELbCjvaIiKTC/t8lrZFtwlmTIbRPXPbILxt1K8xV2QSkJAItPVSzRqP59XIw=="
+                },
+                "payload": {
+                    "model": "Credal_C7",
+                    "ota_type": "firmware",
+                    "source_version": "1.0.0.0",
+                    "target_version": "2.0.0.0",
+                    "upgrade_status": "SUCCESS",
+                    "completed_at": "2020-09-10T09:27:34.308941+00:00",
+                    "detail_msg": "Successful update for device sec_device_0110"
+                }
+            }
+        ]
+    }
+}

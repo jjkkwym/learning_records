@@ -14,9 +14,15 @@
 #define DEBUG(format,...)   printf(format "\n",##__VA_ARGS__);
 #define DEBUG_ARRAY(str,data,length)  array_print(str,data,length)
 
-void array_print(const char *str,uint8_t *data,uint16_t length);
+
 // #define INT_MAX  (int)(pow(2,31) - 1)
 // #define INT_MIN  (int)(-pow(2,31))
+#define ASSERT(EXPR)                                                 \
+if (!(EXPR))                                                         \
+{                                                                    \
+    printf("(%s) has assert failed at %s:%ld.\n", #EXPR, __FUNCTION__, __LINE__); \
+    while (1);                                                       \
+}
 
 #define CONCAT_2(p1, p2)     p1##p2
 #define CONCAT_3(p1,p2,p3)   p1##p2#p3

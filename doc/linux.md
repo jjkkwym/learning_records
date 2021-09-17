@@ -2,6 +2,9 @@
 
 ## Linux cmd
 
+压缩
+tar -cvzf test.tar.gz test/
+
 解压单个
 tar -zvxf file
 tar -jvxf file

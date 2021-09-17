@@ -1,70 +1,12 @@
-#ifndef __LOG_H__
-#define __LOG_H__
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
+#ifndef LOG_H
+#define LOG_H
 #include <stdint.h>
-#include <stdbool.h>
-#include <math.h>
-#include <ctype.h>
+#include <stdio.h>
+#include "common.h"
 
-/* multi color and style output print */
-#define RESET           "\033[1;0m"
-#define BOLD            "\033[1;1m"
-#define UNDERLINE       "\033[1;4m"
-#define INVERSE         "\033[1;7m"
-#define BOLD_OFF        "\033[1;21m"
-#define UNDERLINE_OFF   "\033[1;24m"
-#define INVERSE_OFF     "\033[1;27m"
-#define BLACK           "\033[1;30m"
-#define RED             "\033[1;31m"
-#define GREEN           "\033[1;32m"
-#define YELLOW          "\033[1;33m"
-#define BLUE            "\033[1;34m"
-#define MAGENTA         "\033[1;35m"
-#define CYAN            "\033[1;36m"
-#define WHITE           "\033[1;37m"
+#define MAX_LOG_FILE_SIZE (10*1024*1024)
 
-#define LOG_ERROR_COLOR   RED
-#define LOG_WARNING_COLOR YELLOW
-#define LOG_INFO_COLOR    GREEN
-#define LOG_DEBUG_COLOR   BLUE
-#define LOG_TIMESTAMP_COLOR CYAN
-
-#define LOG_ERROR(format,...)   log_with_level(LOG_LEVEL_ERROR,format,##__VA_ARGS__)   
-#define LOG_WARNING(format,...) log_with_level(LOG_LEVEL_WARNING,format,##__VA_ARGS__)
-#define LOG_INFO(format,...)    log_with_level(LOG_LEVEL_INFO,format,##__VA_ARGS__)
-#define LOG_DEBUG(format,...)   log_with_level(LOG_LEVEL_DEBUG,format,##__VA_ARGS__)
-
-#define LOG_HEXDUMP_ERROR(p_data, len)   
-#define LOG_HEXDUMP_WARNING(p_data, len) 
-#define LOG_HEXDUMP_INFO(p_data, len)    
-#define LOG_HEXDUMP_DEBUG(p_data, len) 
-
-#define LOG_HEXDUMP
-
-#define PRINT(format,...)      printf(format,__VA_ARGS__)
-
-/* reset             0  (everything back to normal)
-bold/bright       1  (often a brighter shade of the same colour)
-underline         4
-inverse           7  (swap foreground and background colours)
-bold/bright off  21
-underline off    24
-inverse off      27 */
-
-
-/* black        30         40
-red          31         41
-green        32         42
-yellow       33         43
-blue         34         44
-magenta      35         45
-cyan         36         46
-white        37         47
- */
-typedef enum 
+typedef enum
 {
     LOG_LEVEL_ERROR,
     LOG_LEVEL_WARNING,
@@ -72,6 +14,69 @@ typedef enum
     LOG_LEVEL_DEBUG
 }log_level_t;
 
-void log_with_level(log_level_t log_level,char *format,...);
+/**
+ * CSI(Control Sequence Introducer/Initiator) sign
+ * more information on https://en.wikipedia.org/wiki/ANSI_escape_code
+ */
+#define CSI_START                      "\033["
+#define CSI_END                        "\033[0m"
+/* output log front color */
+#define F_BLACK                        "30;"
+#define F_RED                          "31;"
+#define F_GREEN                        "32;"
+#define F_YELLOW                       "33;"
+#define F_BLUE                         "34;"
+#define F_MAGENTA                      "35;"
+#define F_CYAN                         "36;"
+#define F_WHITE                        "37;"
+/* output log background color */
+#define B_NULL
+#define B_BLACK                        "40;"
+#define B_RED                          "41;"
+#define B_GREEN                        "42;"
+#define B_YELLOW                       "43;"
+#define B_BLUE                         "44;"
+#define B_MAGENTA                      "45;"
+#define B_CYAN                         "46;"
+#define B_WHITE                        "47;"
+/* output log fonts style */
+#define S_BOLD                         "1m"
+#define S_UNDERLINE                    "4m"
+#define S_BLINK                        "5m"
+#define S_NORMAL                       "22m"
+
+/* output log default color definition: [front color] + [background color] + [show style] */
+
+#ifndef LOG_COLOR_INFO
+    #define LOG_COLOR_INFO                F_CYAN B_NULL S_NORMAL
+#endif
+#ifndef LOG_COLOR_DEBUG
+    #define LOG_COLOR_DEBUG               F_GREEN B_NULL S_NORMAL
+#endif
+#ifndef LOG_COLOR_WARN
+    #define LOG_COLOR_WARN                F_YELLOW B_NULL S_NORMAL
+#endif
+#ifndef LOG_COLOR_ERROR
+    #define LOG_COLOR_ERROR               F_RED B_NULL S_NORMAL
+#endif
+
+#define LOG(format,...)            write_log(format,##__VA_ARGS__)
+#define LOG_INFO(format,...)       write_log("[%s][INFO]"format"\n",log_timestamp(),##__VA_ARGS__)
+#define LOG_DEBUG(format,...)      write_log("[%s][DEBUG]"format"\n",log_timestamp(),##__VA_ARGS__)
+#define LOG_WARNING(format,...)    write_log("[%s][WARNING]"format"\n",log_timestamp(),##__VA_ARGS__)
+#define LOG_ERROR(format,...)      write_log("[%s][ERROR]"format"\n",log_timestamp(),##__VA_ARGS__)
+
+#define LOG_HEXDUMP(str,data,length) array_print("[HEXDUMP] "str,data,length)
+#define LOG_HEX(x)          printf(#x ":0x%02x\n",x)
+
+char *log_timestamp(void);
+
+void log_init(const char *log_file_path);
+
+void write_log(const char *format,...);
+
+void reset_log_file(const char *log_file_path);
+
+void array_print(const char *str,uint8_t *data,uint16_t length);
 
 #endif

@@ -1,17 +1,5 @@
 #include "common.h"
 
-void array_print(const char *str,uint8_t *data,uint16_t length)
-{
-    int i;
-    printf("%s",str);
-    for(i = 0;i < length;i++)
-    {
-        printf("%02x ",data[i]);
-    }
-    printf("\n");
-}
-
-
 /******************************************************************************* 
     two ascii to one hex.example FF to 0xff. 
     nLen: the len of the pbSrc

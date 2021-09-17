@@ -1,0 +1,34 @@
+{
+	"sig":	{
+		"public_key":	"public_key",
+		"method":	"method",
+		"hash":	"hash",
+		"hash_method":	"hash_method",
+		"signature":	"signature"
+	},
+	"payload":	{
+		"device_id":	"device_id",
+		"primary_device_id":	"primary_device_id",
+		"version_reports":	{
+			"sig":	{
+				"public_key":	"public_key",
+				"method":	"method",
+				"hash":	"hash",
+				"hash_method":	"hash_method",
+				"signature":	"signature"
+			},
+			"payload":	{
+				"device_id":	"device_id",
+				"model":	"model",
+				"version":	"version",
+				"filename":	"filename",
+				"length":	"length",
+				"hash":	"hash",
+				"hash_method":	"hash_method",
+				"security_attack":	"security_attack",
+				"latest_verification":	"latest_verification",
+				"counter":	"counter"
+			}
+		}
+	}
+}

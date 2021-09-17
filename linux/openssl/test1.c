@@ -30,7 +30,7 @@ RSA *createRSA(unsigned char *key, int public)
     {
         printf("Failed to create RSA");
     }
-
+    
     return rsa;
 }
 

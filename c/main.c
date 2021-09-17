@@ -35,6 +35,7 @@ void init(const char *data)
     g_data = data;
     printf("%s\n",g_data);
 }
+//test  abest 
 int main()
 {
     const char *abc="abcdefg";
@@ -60,6 +61,8 @@ int main()
         printf("stdin:%s\n",buf);
     }
 } */
+
+//$4.13
 #include "common.h"
 #include <termios.h>
 #include <time.h>
@@ -67,6 +70,14 @@ int main()
 #include <unistd.h>
 #include "pthread.h"
 #include <time.h>
+#include "log.h"
+//Encodes Base64
+#include <openssl/bio.h>
+#include <openssl/evp.h>
+#include <openssl/buffer.h>
+#include <stdint.h>
+#include "base64.h"
+#include "cJSON.h"
 typedef struct
 {
     uint32_t baudrate;
@@ -187,7 +198,7 @@ void *uart_write(void *args)
     char wirte_buf[1024];
     uint8_t wirte_buf_hex[1024];
     uint8_t hci_reset[] = {0x01, 0x03, 0x0c, 0x00};
-    uint8_t hci_read_bdaddr[] = {0x01,0x09,0x10,0x00};
+    uint8_t hci_read_bdaddr[] = {0x01, 0x09, 0x10, 0x00};
     write(uart_fd, hci_reset, sizeof(hci_reset));
     while (1)
     {
@@ -213,20 +224,149 @@ bool uart_init()
     }
     return rc;
 }
+
+int Base64Encode(const unsigned char *buffer, size_t length, char **b64text)
+{ //Encodes a binary safe base 64 string
+    BIO *bio, *b64;
+    BUF_MEM *bufferPtr;
+
+    b64 = BIO_new(BIO_f_base64());
+    bio = BIO_new(BIO_s_mem());
+    bio = BIO_push(b64, bio);
+
+    BIO_set_flags(bio, BIO_FLAGS_BASE64_NO_NL); //Ignore newlines - write everything in one line
+    BIO_write(bio, buffer, length);
+    BIO_flush(bio);
+    BIO_get_mem_ptr(bio, &bufferPtr);
+    BIO_set_close(bio, BIO_NOCLOSE);
+    BIO_free_all(bio);
+
+    *b64text = (*bufferPtr).data;
+
+    return (0); //success
+}
+
+
+void json_creat(char *buf)
+{
+    cJSON * root =  cJSON_CreateObject();
+
+    cJSON_AddStringToObject(root, "PartNumber", "0000000001");
+    cJSON_AddStringToObject(root, "Unique serial number", "0202107161");
+    cJSON_AddStringToObject(root, "Model", "0000000001");
+    cJSON_AddStringToObject(root, "Hardware Initial Version", "0000000101");
+    cJSON_AddStringToObject(root, "Data Pack Initial Version", "0000000101");
+    cJSON_AddStringToObject(root, "Maker", "0000000001");
+    cJSON_AddStringToObject(root, "FCC", "0000000001");
+    cJSON_AddStringToObject(root, "Manufacture Date", "0000000000");
+    cJSON_AddStringToObject(root, "Project ID", "0202107161");
+    cJSON_AddStringToObject(root, "MB Number", "0000000001");
+    cJSON_AddStringToObject(root, "FW Version", "1.0.21.0716");
+    cJSON_AddStringToObject(root, "Device Type", "1");
+    cJSON_AddStringToObject(root, "Provision Status", "0");
+
+    sprintf(buf,"%s", cJSON_Print(root));
+    printf("%s",buf);
+    cJSON_Delete(root);
+}
+void printJson(cJSON * root)//以递归的方式打印json的最内层键值对
+{
+    for(int i=0; i<cJSON_GetArraySize(root); i++)   //遍历最外层json键值对
+    {
+        cJSON * item = cJSON_GetArrayItem(root, i);        
+        if(cJSON_Object == item->type)      //如果对应键的值仍为cJSON_Object就递归调用printJson
+            printJson(item);
+        else                                //值不为json对象就直接打印出键和值
+        {
+            printf("%s->", item->string);
+            printf("%s\n", cJSON_Print(item));
+        }
+    }
+}
+void json_parse(char *buf)
+{
+    cJSON * root = NULL;
+    cJSON * data = NULL;
+    root = cJSON_Parse(buf);
+    if(!root)
+    {
+        printf("Error before: [%s]\n",cJSON_GetErrorPtr());
+    }
+    else
+    {
+        printf("%s\n\n", cJSON_Print(root));
+        //printf("%s\n\n", cJSON_PrintUnformatted(root));
+
+        data = cJSON_GetObjectItem(root, "PartNumber");
+        printf("type:%x,%s:",data->type ,data->string);
+        printf("%s\n", data->valuestring);
+        cJSON_ReplaceItemInObject(root,"PartNumber",cJSON_CreateString("123456"));
+        data = cJSON_GetObjectItem(root, "PartNumber");
+        printf("%s:", data->string);
+        printf("%s\n", data->valuestring);
+        data = cJSON_GetObjectItem(root, "Unique serial number");
+        printf("%s:", data->string);
+        printf("%s\n", data->valuestring); 
+    }
+    printf("%s", cJSON_Print(root));
+}
+
+
 int main()
 {
-    uart_init();
-    
-    int null_fd = open("/dev/null",O_WRONLY | O_TRUNC);
-    dup2(null_fd,STDOUT_FILENO);
-    dup2(null_fd,STDERR_FILENO);
-    dup2(null_fd,STDIN_FILENO);
-    close(null_fd);
+    //uart_init();
+    //char json_buf[1024];
+    //json_creat(json_buf);
+    //json_parse(json_buf);
+    cJSON * root =  cJSON_CreateObject();
+    cJSON_AddStringToObject(root, "PartNumber", "0000000001");
+    cJSON_AddArrayToObject(root,"version_reports");
+    printf("%s\n",cJSON_Print(root));
 
-    printf("123\n");
-    //system("arecord 2.wav | aplay 2.wav");  
+    char *base64EncodeOutput, *text = "6033e422c2a6acc6a175fb1eedde0f6c8eaf66b3737f6888cfbc379e20ea97e0";
+    char buf[128];
+    //base64_encode(text,buf,strlen(text));
+    //printf("Output (base64): %s\n", buf);
+    LOG_INFO("program pid: %d", getpid());
+    LOG_INFO("program uid: %d", getuid());
+    LOG_INFO("program gid: %d", getgid());
+    char log_buf[512];
+    for (int i = 0; i < 512; i++)
+    {
+        log_buf[i] = i;
+    }
+    //array_print("log_buf", log_buf, sizeof(log_buf) - 12);
+    
+
+
+    
+    /* int null_fd = open("/dev/null", O_WRONLY | O_TRUNC);
+    dup2(null_fd, STDOUT_FILENO);
+    dup2(null_fd, STDERR_FILENO);
+    dup2(null_fd, STDIN_FILENO);
+    close(null_fd);
+    system("ls | grep log");
+    char buf[1024];
+    int n;
+        
+    int i = 0;
+
+    system("arecord 2.wav | aplay 2.wav");
     while (1)
     {
-
-    }
+        n = read(STDIN_FILENO, buf, sizeof(buf));
+        printf("read %d len\n", n);
+        if (n > 0)
+        {
+            printf("write %d len\n", n);
+            LOG_HEXDUMP("stdin: ", buf, n);
+            write(STDOUT_FILENO, buf, n);
+        }
+        else if (n == 0)
+        {
+            printf("end\n");
+        }
+        LOG_INFO("test");
+        sleep(1);
+    } */
 }
